@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('return_items', function (Blueprint $table) {
+        Schema::create('laptop_return_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('return_id')->constrained('returns')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('laptop_return_id')->constrained('laptop_returns')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('laptop_id')->constrained('laptops')->cascadeOnUpdate()->restrictOnDelete();
             $table->integer('quantity');
             $table->decimal('price_at_return', 10, 2);
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('return_items');
+        Schema::dropIfExists('laptop_return_items');
     }
 };

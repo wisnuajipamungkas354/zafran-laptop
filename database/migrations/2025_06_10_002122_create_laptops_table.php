@@ -24,7 +24,6 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
             $table->text('description')->nullable();
-            $table->string('image_url', 255)->nullable();
             $table->foreignId('added_by')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
