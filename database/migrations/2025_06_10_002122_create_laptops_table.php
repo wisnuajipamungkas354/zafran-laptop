@@ -24,7 +24,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
             $table->text('description')->nullable();
-            $table->foreignId('added_by')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->json('laptop_images');
+            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

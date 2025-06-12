@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Laptop;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,9 +16,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'email' => 'wisnu@gmail.com',
+            'password' => 'password',
+            'name' => 'Wisnu',
+            'role' => 'OWNER',
+            'gender' => 'L',
+            'address' => 'Klari, Karawang',
+            'phone_number' => '085889634432',
+            'is_active' => true,
         ]);
     }
 }
