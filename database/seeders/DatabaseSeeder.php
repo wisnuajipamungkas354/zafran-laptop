@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'wisnu@gmail.com',
             'password' => 'password',
             'name' => 'Wisnu',
-            'role' => 'OWNER',
             'gender' => 'L',
             'address' => 'Klari, Karawang',
             'phone_number' => '085889634432',

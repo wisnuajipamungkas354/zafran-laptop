@@ -51,15 +51,11 @@ class UserResource extends Resource
                         'P' => 'Perempuan',
                     ])
                     ->required(),
-                Select::make('role')
-                    ->label('Jabatan')
-                    ->placeholder('Pilih jabatan')
-                    ->options([
-                        'OWNER' => 'Owner',
-                        'ADMIN' => 'Admin',
-                        'COURIR' => 'Kurir',
-                    ])
-                    ->required(),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
                 TextInput::make('phone_number')
                     ->label('No Telepon')
                     ->tel()
