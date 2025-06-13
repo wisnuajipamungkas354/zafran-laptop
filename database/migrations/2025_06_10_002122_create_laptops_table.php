@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('laptops', function (Blueprint $table) {
             $table->id();
-            $table->string('brand', 50);
+            $table->foreignId('brand_id')->constrained('brands', 'id')->cascadeOnUpdate()->restrictOnDelete();
             $table->string('model', 100);
             $table->string('processor', 50);
             $table->string('ram', 20);

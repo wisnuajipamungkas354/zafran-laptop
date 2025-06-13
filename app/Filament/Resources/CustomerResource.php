@@ -2,14 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\CustomerResource\Pages;
+use App\Filament\Resources\CustomerResource\RelationManagers;
+use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -18,20 +17,19 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class CustomerResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-face-smile';
 
-    protected static ?string $navigationLabel = 'User';
+    protected static ?string $navigationLabel = 'Pelanggan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('email')
-                    ->email()
                     ->placeholder('Masukkan email')
                     ->required(),
                 TextInput::make('password')
@@ -39,25 +37,19 @@ class UserResource extends Resource
                     ->revealable()
                     ->placeholder('Masukkan password')
                     ->required(),
-                TextInput::make('name')
-                    ->label('Nama Lengkap')
-                    ->placeholder('Masukkan nama lengkap')
+                TextInput::make('first_name')
+                    ->label('Nama Depan')
+                    ->placeholder('Masukkan nama depan')
                     ->required(),
+                TextInput::make('last_name')
+                    ->label('Nama Belakang')
+                    ->placeholder('Masukkan nama depan'),
                 Select::make('gender')
                     ->label('Jenis Kelamin')
                     ->placeholder('Masukkan jenis kelamin')
                     ->options([
                         'L' => 'Laki-laki',
                         'P' => 'Perempuan',
-                    ])
-                    ->required(),
-                Select::make('role')
-                    ->label('Jabatan')
-                    ->placeholder('Pilih jabatan')
-                    ->options([
-                        'OWNER' => 'Owner',
-                        'ADMIN' => 'Admin',
-                        'COURIR' => 'Kurir',
                     ])
                     ->required(),
                 TextInput::make('phone_number')
@@ -71,7 +63,6 @@ class UserResource extends Resource
                 Textarea::make('address')
                     ->label('Alamat')
                     ->required(),
-                Toggle::make('is_active'),
             ]);
     }
 
@@ -79,8 +70,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('Nama Lengkap'),
+                TextColumn::make('first_name')
+                    ->label('Nama Depan'),
+                TextColumn::make('last_name')
+                    ->label('Nama Belakang'),
                 TextColumn::make('gender')
                     ->label('L/P'),
                 TextColumn::make('email')
@@ -100,13 +93,13 @@ class UserResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateHeading('Tidak ada data user');
+            ->emptyStateHeading('Tidak ada data pelanggan');
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageUsers::route('/'),
+            'index' => Pages\ManageCustomers::route('/'),
         ];
     }
 }
