@@ -4,10 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LaptopResource\Pages;
 use App\Filament\Resources\LaptopResource\RelationManagers;
+use App\Models\Brand;
 use App\Models\Laptop;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -19,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class LaptopResource extends Resource
 {
@@ -45,8 +48,9 @@ class LaptopResource extends Resource
                     ->maxSize(2048)
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('brand')
-                    ->placeholder('Masukkan nama brand')
+                Select::make('brand_id')
+                    ->placeholder('Pilih brand')
+                    ->options(Brand::query()->pluck('brand_name', 'id'))
                     ->required(),
                 TextInput::make('model')
                     ->placeholder('Masukkan model laptop')
@@ -105,7 +109,7 @@ class LaptopResource extends Resource
                     ->height(250)
                     ->limit(1)
                     ->visibility('public'),
-                TextColumn::make('brand')
+                TextColumn::make('brand.brand_name')
                     ->label('Merk'),
                 TextColumn::make('model'),
                 TextColumn::make('condition')
@@ -128,11 +132,19 @@ class LaptopResource extends Resource
                     ->modalHeading('Hapus Data')
                     ->modalDescription('Apakah kamu yakin data laptop ini akan dihapus ?')
                     ->modalSubmitActionLabel('Ya')
-                    ->modalCancelActionLabel('Batal'),
+                    ->modalCancelActionLabel('Batal')
+                    ->after(function(Laptop $record) {
+                        Storage::disk('public')->delete($record['laptop_images']);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Hapus yang dipilih')
+                        ->modalHeading('Hapus beberapa data laptop')
+                        ->modalDescription('Apakah kamu yakin beberapa data laptop ini akan dihapus?')
+                        ->modalSubmitActionLabel('Ya')
+                        ->modalCancelActionLabel('Batal'),
                 ]),
             ])
             ->emptyStateHeading('Tidak ada data laptop');

@@ -16,6 +16,10 @@ class Laptop extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function brand() {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
     public function orderItem() {
         return $this->hasMany(orderItem::class);
     }
