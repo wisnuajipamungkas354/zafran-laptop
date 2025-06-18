@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ShoppingCart extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function customer() {
         return $this->belongsTo(Customer::class, 'customer_id');

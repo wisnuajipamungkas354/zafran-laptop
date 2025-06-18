@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('payment_type');// Cash, Transfer, Gopay, QRIS, Dana dll
             $table->string('transaction_id')->nullable(); // ID dari Midtrans
             $table->string('status'); // pending, settlement, expired, etc.
-            $table->decimal('amount', 10, 2);
+            $table->decimal('total_amount', 10, 2);
             $table->json('response')->nullable(); // simpan response json Midtrans
             $table->timestamps();
         });

@@ -16,12 +16,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->decimal('total_amount', 10, 2);
             $table->enum('payment_status', ['pending', 'paid', 'canceled'])->default('pending');
-            $table->string('payment_type')->nullable();
-            $table->string('payment_token')->nullable();
-            $table->string('midtrans_order_id')->nullable();
             $table->enum('order_status', ['pending', 'processing', 'shipped', 'delivered', 'canceled'])->default('pending');
             $table->text('shipping_address');
-            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

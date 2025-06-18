@@ -15,4 +15,8 @@ class Order extends Model
     public function orderItem() {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function transaction() {
+        return $this->hasMany(Transaction::class);
+    }
 }
