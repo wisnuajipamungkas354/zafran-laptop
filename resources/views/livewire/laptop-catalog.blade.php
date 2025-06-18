@@ -1,5 +1,8 @@
 <div class="container mx-auto px-6 py-8">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Katalog Laptop</h1>
+    <div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Katalog Laptop</h1>
+        {{-- @livewire('navbar') --}}
+    </div>
 
     {{-- Grid katalog laptop --}}
     @if($laptops->isEmpty())
@@ -17,10 +20,10 @@
                     </a>
 
                     <div class="p-4">
-                        <h3 class="text-sm text-gray-600 font-semibold">
+                        <h3 class="text-sm text-gray-600 font-semibold uppercase">
                             {{ $laptop->brand->brand_name ?? 'Unknown Brand' }}
                         </h3>
-                        <p class="text-lg font-bold text-gray-800">
+                        <p class="text-lg font-bold text-gray-800 uppercase">
                             {{ $laptop->model }}
                         </p>
                         <p class="text-sm text-gray-500 mt-1">

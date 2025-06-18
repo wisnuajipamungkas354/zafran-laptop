@@ -44,14 +44,6 @@ class CustomerResource extends Resource
                 TextInput::make('last_name')
                     ->label('Nama Belakang')
                     ->placeholder('Masukkan nama depan'),
-                Select::make('gender')
-                    ->label('Jenis Kelamin')
-                    ->placeholder('Masukkan jenis kelamin')
-                    ->options([
-                        'L' => 'Laki-laki',
-                        'P' => 'Perempuan',
-                    ])
-                    ->required(),
                 TextInput::make('phone_number')
                     ->label('No Telepon')
                     ->tel()
@@ -74,8 +66,6 @@ class CustomerResource extends Resource
                     ->label('Nama Depan'),
                 TextColumn::make('last_name')
                     ->label('Nama Belakang'),
-                TextColumn::make('gender')
-                    ->label('L/P'),
                 TextColumn::make('email')
                     ->label('Email'),
                 TextColumn::make('phone_number')

@@ -34,5 +34,21 @@ class DatabaseSeeder extends Seeder
                 'brand_name' => $b,
             ]);
         }
+
+        $laptops = [
+            [
+                'brand_id' => 1,
+                'model' => 'Vivobook X441N',
+                'processor' => 'Intel Celeron N4002',
+                'ram' => '4GB',
+                'storage' => '256GB SSD',
+                'screen_size' => '14 Inch',
+                'condition' => 'Bekas',
+                'price' => 1800000,
+                'stock' => 13,
+                'description' => 'No Minus',
+                'user_id' => 1,
+            ]
+        ];
     }    
 }
