@@ -1,4 +1,4 @@
-<div class="bg-white shadow sticky top-0 z-50">
+<div class="bg-white shadow sticky top-0 z-50 flex justify-between">
     <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <a href="{{ route('katalog') }}" class="text-2xl font-bold text-black-600">Zafran Laptop</a>
 
@@ -17,10 +17,22 @@
     
             <div class="flex items-center space-x-2">
                 <input type="number" wire:model.live="minPrice" placeholder="Min"
-                       class="w-24 px-2 py-1 border rounded-lg text-sm focus:outline-none focus:ring focus:border-blue-300">
+                       class="w-24 px-2 py-2 border rounded-lg text-sm focus:outline-none focus:ring focus:border-blue-300">
                 <span>-</span>
                 <input type="number" wire:model.live="maxPrice" placeholder="Max"
-                       class="w-24 px-2 py-1 border rounded-lg text-sm focus:outline-none focus:ring focus:border-blue-300">
+                       class="w-24 px-2 py-2 border rounded-lg text-sm focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+
+            <div class="flex gap-1 items-center">
+                @auth('customer')
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-700">Hi, {{ auth('customer')->user()->first_name }}</span>
+                    @livewire('logout-customer')
+                </div>
+                @else
+                <a href="{{ route('register.customer') }}" class="text-sm text-blue-600 hover:underline">Daftar</a>
+                <a href="{{ route('login.customer') }}" wire:navigate class="border border-blue-600 bg-blue-600 text-white py-1 px-4 rounded">Login</a>
+                @endauth
             </div>
         </div>
     </div>

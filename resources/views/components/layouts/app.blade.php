@@ -17,7 +17,7 @@
     <body>
         @livewire('navbar')
 
-        <main class="lg:px-14 min-h-screen">
+        <main class="lg:px-14 min-h-screen flex">
             {{ $slot }}
         </main>
 
