@@ -9,11 +9,11 @@ class ShoppingCart extends Model
     protected $guarded = ['id'];
 
     public function customer() {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(Customer::class);
     }
 
     public function laptop() {
-        return $this->belongsTo(Laptop::class, 'laptop_id');
+        return $this->belongsTo(Laptop::class);
     }
 }
 

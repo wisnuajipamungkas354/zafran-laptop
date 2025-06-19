@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Laptop;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class LaptopDetail extends Component
@@ -35,7 +37,15 @@ class LaptopDetail extends Component
 
     public function buyNow()
     {
-        // Arahkan ke checkout langsung
+        if(!Auth::guard('customer')->check()) {
+            return redirect()->route('login.customer');
+        }
+
+        return redirect()->route('checkout', [
+            'buy_now' => 1,
+            'laptop_id' => $this->laptop->id,
+            'quantity' => $this->quantity,
+        ]);
     }
 
     public function render()

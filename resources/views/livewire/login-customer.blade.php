@@ -1,17 +1,19 @@
-<div class="w-1/3 mx-auto bg-white flex flex-col justify-center">
-    <img src="{{ asset('img/logo.png') }}" class="mx-auto w-20 mb-3" />
-    <h2 class="text-2xl font-bold mb-4 text-center">Masuk ke Akun</h2>
+<div class="flex flex-col justify-center w-1/3 mx-auto bg-white">
+    <img src="{{ asset('img/logo.png') }}" class="w-20 mx-auto mb-3" />
+    <h2 class="mb-4 text-2xl font-bold text-center">Masuk ke Akun</h2>
 
-    @error('email') <p class="text-red-500 text-sm pb-1">{{ $message }}</p> @enderror
-    <form wire:submit.prevent="login" class="space-y-4 flex flex-col">
+    @error('email') <p class="pb-1 text-sm text-red-500">{{ $message }}</p> @enderror
+    <form wire:submit.prevent="login" class="flex flex-col space-y-4">
         <input type="email" wire:model="email" placeholder="Email" class="w-full p-2 rounded border @error('email') border-red-500 @enderror" />
 
         <input type="password" wire:model="password" placeholder="Password" class="w-full p-2 rounded border @error('email') border-red-500 @enderror" />
 
-        <button class="bg-blue-600 text-white py-2 px-4 rounded">Login</button>
+        <button class="relative flex items-center justify-center px-4 py-2 text-white bg-blue-600 rounded">
+            <img wire:loading src="{{ asset('img/spinner.svg') }}" class="absolute w-5 h-5 mr-16 animate-spin" /> Login
+        </button>
     </form>
 
-    <p class="text-sm text-center mt-4">
+    <p class="mt-4 text-sm text-center">
         Belum punya akun?
         <a href="{{ route('register.customer') }}" wire:navigate class="text-blue-600 hover:underline">Daftar di sini</a>
     </p>
