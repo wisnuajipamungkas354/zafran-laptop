@@ -4,9 +4,9 @@
 
     @error('email') <p class="text-red-500 text-sm pb-1">{{ $message }}</p> @enderror
     <form wire:submit.prevent="login" class="space-y-4 flex flex-col">
-        <input type="email" wire:model="email" placeholder="Email" class="w-full p-2 rounded @error('email') border border-red-500 @enderror" />
+        <input type="email" wire:model="email" placeholder="Email" class="w-full p-2 rounded border @error('email') border-red-500 @enderror" />
 
-        <input type="password" wire:model="password" placeholder="Password" class="w-full p-2 rounded @error('email') border border-red-500 @enderror" />
+        <input type="password" wire:model="password" placeholder="Password" class="w-full p-2 rounded border @error('email') border-red-500 @enderror" />
 
         <button class="bg-blue-600 text-white py-2 px-4 rounded">Login</button>
     </form>

@@ -33,7 +33,7 @@
             {{-- Input jumlah --}}
             <div class="flex items-center mt-4">
                 <label class="mr-2">Jumlah:</label>
-                <input type="number" wire:model="quantity" min="1"
+                <input type="number" wire:model.live="quantity" min="1"
                        max="{{ $laptop->stock }}"
                        class="w-20 border rounded px-2 py-1">
             </div>
