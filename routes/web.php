@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Middleware\RedirectIfNotCustomer;
 use App\Livewire\Checkout;
 use App\Livewire\LaptopCatalog;
@@ -56,5 +57,7 @@ Route::get('/payment-success', function (Request $request) {
 
     return redirect()->route('katalog')->with('success', 'Pembayaran berhasil.');
 });
+Route::get('/transaksi/{id}/invoice', [InvoiceController::class, 'download'])->name('transaksi.invoice');
+
 Route::middleware(RedirectIfNotCustomer::class)->group(function () {
 });
