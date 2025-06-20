@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('first_name', 50);
             $table->string('last_name', 50)->nullable();
-            $table->enum('gender', ['L','P']);
-            $table->text('address');
+            $table->text('address')->nullable();
             $table->string('phone_number', 20)->nullable();
             $table->rememberToken();
             $table->timestamps();

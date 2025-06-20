@@ -1,0 +1,53 @@
+<div class="max-w-5xl px-4 py-10 mx-auto">
+    <h2 class="mb-8 text-3xl font-bold text-gray-800">Detail Transaksi #{{ $order->id }}</h2>
+
+    {{-- Informasi Order --}}
+    <div class="p-6 mb-6 space-y-2 bg-white shadow rounded-xl">
+        <p class="text-gray-700"><strong>Tanggal:</strong> {{ $order->created_at->format('d M Y H:i') }}</p>
+        <p class="text-gray-700"><strong>Alamat Pengiriman:</strong> {{ $order->shipping_address }}</p>
+
+        <div class="flex gap-2 mt-3">
+            <span class="px-3 py-1 rounded-full text-sm font-medium
+                {{ $order->payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                {{ ucfirst($order->payment_status) }}
+            </span>
+            <span class="px-3 py-1 rounded-full text-sm font-medium
+                {{ $order->order_status === 'processing' ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-700' }}">
+                {{ ucfirst($order->order_status) }}
+            </span>
+        </div>
+    </div>
+
+    {{-- Daftar Item --}}
+    <div class="p-6 bg-white shadow rounded-xl">
+        <h3 class="mb-4 text-lg font-bold text-gray-800">Item Pesanan</h3>
+
+        <div class="divide-y">
+            @foreach($order->orderItem as $item)
+                <div class="flex items-center gap-4 py-4 border-b">
+                    <img src="{{ asset('storage/' . $item->laptop->laptop_images[0] ?? 'img/default.png') }}"
+                        class="object-cover w-20 h-16 border rounded" alt="Thumbnail">
+
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-800 uppercase">
+                            {{ $item->laptop->brand->brand_name ?? '-' }} {{ $item->laptop->model }}
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            {{ $item->quantity }} x Rp{{ number_format($item->price_per_item, 0, ',', '.') }}
+                        </p>
+                    </div>
+
+                    <div class="font-semibold text-right text-blue-600">
+                        Rp{{ number_format($item->subtotal, 0, ',', '.') }}
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+
+        <div class="flex items-center justify-between pt-4 mt-6 text-lg font-bold text-gray-900 border-t">
+            <span>Total</span>
+            <span>Rp{{ number_format($order->total_amount, 0, ',', '.') }}</span>
+        </div>
+    </div>
+</div>
