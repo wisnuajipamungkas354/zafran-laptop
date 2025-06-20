@@ -50,7 +50,7 @@ Route::get('/payment-success', function (Request $request) {
         'payment_type' => 'midtrans',
         'transaction_id' => 'ORDER-' . $order->id,
         'status' => 'paid',
-        'total_amout' => $order->total_amount,
+        'total_amount' => $order->total_amount,
         'response' => 'manual-success',
     ]);
 
