@@ -64,24 +64,29 @@ class Checkout extends Component
             ]);
 
             foreach ($this->cartItems as $item) {
+                if ($item->quantity > $item->laptop->stock) {
+                    $this->addError('error', "Stok untuk {$item->laptop->model} tidak mencukupi.");
+                    return;
+                }
+
                 OrderItem::create([
                     'order_id'       => $order->id,
                     'laptop_id'      => $item->laptop_id,
                     'quantity'       => $item->quantity,
                     'price_per_item' => $item->laptop->price,
-                    'sub_total'      => $item->laptop->price * $item->quantity,
+                    'subtotal'      => $item->laptop->price * $item->quantity,
                 ]);
             }
 
             // Hapus keranjang setelah berhasil checkout
-            ShoppingCart::where('customer_id', auth('customer')->id())->delete();
+            // ShoppingCart::where('customer_id', auth('customer')->id())->delete();
 
             DB::commit();
 
-            return redirect()->route('katalog')->with('success', 'Pesanan berhasil dibuat.');
+            return redirect()->route('payment', ['order' => $order->id]);
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->addError('error', 'Gagal memproses pesanan.');
+            $this->addError('error', 'Gagal memproses pesanan.' . $e->getMessage());
         }
     }
 

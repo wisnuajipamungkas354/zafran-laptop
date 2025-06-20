@@ -41,6 +41,11 @@ class LaptopDetail extends Component
             return redirect()->route('login.customer');
         }
 
+        if ($this->quantity > $this->laptop->stock) {
+            $this->addError('quantity', 'Jumlah melebihi stok tersedia.');
+            return;
+        }
+
         return redirect()->route('checkout', [
             'buy_now' => 1,
             'laptop_id' => $this->laptop->id,

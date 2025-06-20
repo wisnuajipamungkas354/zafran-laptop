@@ -16,7 +16,7 @@
 
         {{-- Info laptop --}}
         <div>
-            <h2 class="text-2xl font-bold text-gray-800">
+            <h2 class="text-2xl font-bold text-gray-800 uppercase">
                 {{ $laptop->brand->brand_name ?? '' }} {{ $laptop->model }}
             </h2>
             <p class="mt-1 text-sm text-gray-600">

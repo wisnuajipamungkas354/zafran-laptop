@@ -38,6 +38,7 @@ class LaptopCatalog extends Component
         ->when($this->maxPrice, fn($query) =>
             $query->where('price', '<=', $this->maxPrice)
         )
+        ->where('stock', '>', 0)
         ->latest()
         ->get();
 
