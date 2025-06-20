@@ -6,6 +6,16 @@
             class="inline-block px-4 py-2 mb-6 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-xl">
              Download Invoice PDF
         </a>
+        
+        @if($order->isReturnable())
+            <a href="{{ route('retur.form', $order->id) }}"
+            class="inline-block px-4 py-2 mt-4 text-sm text-white bg-red-600 rounded hover:bg-red-700">
+                Ajukan Retur / Klaim Garansi
+            </a>
+        @else
+            <p class="mt-4 text-sm italic text-gray-500">Masa klaim garansi (14 hari) telah berakhir.</p>
+        @endif
+
     </div>
      
 

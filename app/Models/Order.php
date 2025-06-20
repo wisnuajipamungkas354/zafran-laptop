@@ -44,6 +44,14 @@ class Order extends Model
         return $finalId;
     }
 
+    public function isReturnable()
+    {
+        if (!$this->delivery || !$this->delivery->delivery_date) return false;
+
+        $daysSinceDelivery = now()->diffInDays($this->delivery->delivery_date);
+        return $daysSinceDelivery <= 14;
+    }
+
     public function customer() {
         return $this->belongsTo(Customer::class);
     }
@@ -54,5 +62,10 @@ class Order extends Model
 
     public function transaction() {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
     }
 }

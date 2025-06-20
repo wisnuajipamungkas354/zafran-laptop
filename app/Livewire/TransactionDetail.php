@@ -11,7 +11,7 @@ class TransactionDetail extends Component
 
     public function mount($id)
     {
-        $this->order = Order::with('orderItem.laptop')
+        $this->order = Order::with(['orderItem.laptop','delivery'])
             ->where('customer_id', auth('customer')->id())
             ->findOrFail($id);
     }

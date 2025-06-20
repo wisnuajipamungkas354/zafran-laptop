@@ -8,6 +8,7 @@ use App\Livewire\LaptopDetail;
 use App\Livewire\LoginCustomer;
 use App\Livewire\PaymentPage;
 use App\Livewire\RegisterCustomer;
+use App\Livewire\ReturnForm;
 use App\Livewire\TransactionDetail;
 use App\Livewire\TransactionHistory;
 use App\Models\Order;
@@ -58,6 +59,7 @@ Route::get('/payment-success', function (Request $request) {
     return redirect()->route('katalog')->with('success', 'Pembayaran berhasil.');
 });
 Route::get('/transaksi/{id}/invoice', [InvoiceController::class, 'download'])->name('transaksi.invoice');
+Route::get('/retur/{order}', ReturnForm::class)->name('retur.form');
 
 Route::middleware(RedirectIfNotCustomer::class)->group(function () {
 });

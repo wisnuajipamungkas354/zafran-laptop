@@ -11,7 +11,7 @@ class TransactionHistory extends Component
 
     public function mount()
     {
-        $this->orders = Order::where('customer_id', auth('customer')->id())
+        $this->orders = Order::with('delivery')->where('customer_id', auth('customer')->id())
                              ->orderByDesc('id')
                              ->get();
     }

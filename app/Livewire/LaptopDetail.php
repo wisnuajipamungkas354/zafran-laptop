@@ -38,7 +38,7 @@ class LaptopDetail extends Component
     public function buyNow()
     {
         if(!Auth::guard('customer')->check()) {
-            return redirect()->route('login.customer');
+            return $this->redirect('/login-customer', navigate:true);
         }
 
         if ($this->quantity > $this->laptop->stock) {

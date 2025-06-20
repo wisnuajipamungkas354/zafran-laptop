@@ -1,6 +1,9 @@
 <div class="sticky top-0 z-50 flex justify-between bg-white shadow">
     <div class="container flex flex-col gap-4 px-6 py-4 mx-auto md:flex-row md:items-center md:justify-between">
-        <a href="{{ route('katalog') }}" class="text-2xl font-bold text-black-600">Zafran Laptop</a>
+        <a href="{{ route('katalog') }}" wire:navigate class="text-2xl font-bold text-black-600">
+            {{-- <img src="{{ asset('img/logo.png') }}" class="w-12 h-12" /> --}}
+            <span class="text-2xl text-orange-500">Zafran</span> Laptop
+        </a>
 
         <div class="flex gap-3">
             <input type="text" wire:model.live="search"

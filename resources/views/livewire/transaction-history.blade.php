@@ -35,6 +35,16 @@
                                 {{ ucfirst($order->order_status) }}
                             </span>
                         </div>
+
+                        @if($order->isReturnable())
+                            <a href="{{ route('retur.form', $order->id) }}"
+                            class="inline-block px-3 py-1 mt-2 text-xs text-white bg-red-600 rounded hover:bg-red-700">
+                                Ajukan Retur / Klaim Garansi
+                            </a>
+                        @else
+                            <p class="mt-2 text-sm italic text-gray-400">Masa garansi sudah habis</p>
+                        @endif
+
                     </div>
                 </div>
             @endforeach
