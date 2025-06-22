@@ -28,4 +28,8 @@ class Customer extends Authenticatable
     public function shoppingCart() {
         return $this->hasMany(ShoppingCart::class);
     }
+
+    public function laptopReturn() {
+        return $this->hasMany(LaptopReturn::class);
+    }
 }

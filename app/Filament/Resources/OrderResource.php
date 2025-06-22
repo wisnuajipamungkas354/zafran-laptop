@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -21,6 +22,10 @@ class OrderResource extends Resource
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Database';
+
+    protected static ?string $navigationLabel = 'Order';
 
     public static function form(Form $form): Form
     {
@@ -47,7 +52,8 @@ class OrderResource extends Resource
                     ->date('d/m/Y H:i'),
                 TextColumn::make('customer.first_name')
                     ->label('Nama Pelanggan')
-                    ->formatStateUsing(fn(string $state, Order $order) => $state . ' ' . $order->customer->last_name),
+                    ->formatStateUsing(fn(string $state, Order $order) => $state . ' ' . $order->customer->last_name)
+                    ->searchable(),
                 TextColumn::make('total_amount')
                     ->label('Total Transaksi')
                     ->formatStateUsing(fn(string $state) => 'Rp' . number_format($state, 0, ',', '.'))
@@ -95,7 +101,21 @@ class OrderResource extends Resource
                 
             ])
             ->filters([
-                //
+                SelectFilter::make('payment_status')
+                    ->label('Status Pembayaran')
+                    ->options([
+                        'pending' => 'Belum Dibayar',
+                        'paid' => 'Dibayar',
+                        'canceled' => 'Dibatalkan',
+                    ]),
+                SelectFilter::make('order_status')
+                    ->options([
+                        'pending' => 'Menunggu Pembayaran',
+                        'processing' => 'Diproses Admin',
+                        'shipped' => 'Sedang Dikirim',
+                        'delivered' => 'Sudah Diterima',
+                        'canceled' => 'Dibatalkan'
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -105,7 +125,8 @@ class OrderResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Tidak ada orderan');
     }
 
     public static function getPages(): array

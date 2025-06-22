@@ -13,6 +13,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+        @stack('style')
     </head>
     <body>
         @livewire('navbar')
@@ -22,7 +23,11 @@
         </main>
 
         {{-- @include('components.layout.footer') --}}
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <script>
+            lucide.createIcons();
+        </script>
+        @stack('scripts')
         @livewireScripts
-
     </body>
 </html>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('laptop_id')->constrained('laptops')->cascadeOnUpdate()->restrictOnDelete();
             $table->integer('quantity');
             $table->decimal('price_at_return', 10, 2);
-            $table->string('condition_on_return', 50)->nullable();
+            $table->text('condition_on_return')->nullable();
             $table->decimal('subtotal_returned', 10, 2);
             $table->timestamps();
         });

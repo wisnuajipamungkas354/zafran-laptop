@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Facades\Storage;
 
 class LaptopResource extends Resource
@@ -29,7 +30,11 @@ class LaptopResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cpu-chip';
 
+    protected static ?string $navigationGroup = 'Database';
+
     protected static ?string $navigationLabel = 'Laptop';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -74,9 +79,14 @@ class LaptopResource extends Resource
                     ->label('Ukuran Layar')
                     ->placeholder('Masukkan ukuran layar')
                     ->required(),
-                TextInput::make('condition')
-                    ->label('Kondisi')
-                    ->placeholder('Masukkan kondisi laptop')
+                Select::make('grade')
+                    ->label('Grade')
+                    ->placeholder('Pilih Grade')
+                    ->options([
+                        'a' => 'A',
+                        'b' => 'B',
+                        'c' => 'C',
+                    ])
                     ->required(),
                 TextInput::make('price')
                     ->label('Harga')
@@ -113,10 +123,18 @@ class LaptopResource extends Resource
                     ->limit(1)
                     ->visibility('public'),
                 TextColumn::make('brand.brand_name')
-                    ->label('Merk'),
-                TextColumn::make('model'),
-                TextColumn::make('condition')
-                    ->label('Kondisi'),
+                    ->label('Merk')
+                    ->searchable(),
+                TextColumn::make('model')
+                    ->searchable(),
+                TextColumn::make('grade')
+                    ->label('Grade')
+                    ->badge()
+                    ->color(fn(string $state) => match ($state) {
+                        'a' => 'success',
+                        'b' => 'warning',
+                        'c' => 'danger'
+                    }),
                 TextColumn::make('stock')
                     ->label('Stok'),
                 TextColumn::make('price')
@@ -126,7 +144,10 @@ class LaptopResource extends Resource
                     ->label('Ditambahkan oleh'),
             ])
             ->filters([
-                //
+                SelectFilter::make('brand_id')
+                    ->label('Brand')
+                    ->options(fn() => Brand::query()->pluck('brand_name', 'id')),
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

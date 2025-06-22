@@ -38,8 +38,6 @@ class ReturnForm extends Component
             'customer_id' => auth('customer')->id(),
             'return_date' => now(),
             'reason' => $this->reason,
-            'return_status' => 'pending',
-            'refund_status' => 'unpaid',
         ]);
 
         foreach ($this->order->orderItem as $item) {

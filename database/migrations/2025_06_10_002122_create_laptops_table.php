@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('storage', 50);
             $table->string('graphics_card', 100)->nullable();
             $table->string('screen_size', 20);
-            $table->string('condition', 50);
+            $table->enum('grade', ['a','b','c']);
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
             $table->text('description')->nullable();

@@ -1,4 +1,4 @@
-<div class="max-w-6xl px-4 py-10 mx-auto">
+<div class="w-full px-4 py-10 mx-auto">
     <h2 class="mb-8 text-3xl font-bold text-gray-800">Riwayat Transaksi</h2>
 
     @if($orders->isEmpty())
@@ -45,29 +45,43 @@
                         {{-- Kanan: Status & Aksi --}}
                         <div class="flex flex-col items-start gap-2 md:items-end md:justify-between">
 
+                            {{-- Klaim Garansi --}}
+                            @if(!$order->delivery || !$order->delivery->delivery_date)
                             {{-- Status --}}
                             <div class="flex flex-wrap gap-2">
                                 <span class="px-3 py-1 rounded-full text-sm font-medium
                                     {{ $order->payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                    {{ ucfirst($order->payment_status) }}
+                                    @if($order->payment_status === 'paid')
+                                    Sudah Dibayar
+                                    @elseif($order->payment_status === 'pending')
+                                    Belum Dibayar
+                                    @elseif($order->payment_status === 'canceled')
+                                    Dibatalkan
+                                    @endif
                                 </span>
                                 <span class="px-3 py-1 rounded-full text-sm font-medium
                                     {{ $order->order_status === 'processing' ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-700' }}">
-                                    {{ ucfirst($order->order_status) }}
+                                    @if($order->order_status === 'pending')
+                                    Menunggu Pembayaran
+                                    @elseif($order->order_status === 'processing')
+                                    Diproses Admin
+                                    @elseif($order->order_status === 'shipped')
+                                    Sedang Dikirim
+                                    @elseif($order->order_status === 'delivered')
+                                    Sudah Diterima
+                                    @elseif($order->order_status === 'canceled')
+                                    Dibatalkan
+                                    @endif
                                 </span>
                             </div>
-
-                            {{-- Klaim Garansi --}}
-                            @if(!$order->delivery || !$order->delivery->delivery_date)
-                               
-                            @elseif($order->isReturnable())
-                                <a href="{{ route('retur.form', $order->id) }}"
-                                   class="inline-block px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700">
-                                    Ajukan Retur / Klaim Garansi
-                                </a>
+                            {{-- @elseif($order->isReturnable())
+                                <a href="{{ route('retur.form', $order->id) }}" wire:navigate
+                                   class="inline-block px-4 py-2 text-sm text-white bg-red-600 rounded-xl hover:bg-red-700">
+                                    Klaim Garansi
+                                </a> --}}
                             @else
                                 <p class="text-sm italic text-gray-500">
-                                    Masa garansi (14 hari) telah berakhir.
+                                   Transaksi Selesai
                                 </p>
                             @endif
                         </div>

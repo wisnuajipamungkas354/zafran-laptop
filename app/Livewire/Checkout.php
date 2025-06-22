@@ -79,7 +79,7 @@ class Checkout extends Component
             }
 
             // Hapus keranjang setelah berhasil checkout
-            // ShoppingCart::where('customer_id', auth('customer')->id())->delete();
+            ShoppingCart::where('customer_id', auth('customer')->id())->delete();
 
             DB::commit();
 

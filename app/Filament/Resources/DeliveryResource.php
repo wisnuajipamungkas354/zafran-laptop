@@ -18,12 +18,16 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
 
 class DeliveryResource extends Resource
 {
     protected static ?string $model = Delivery::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
+
+    protected static ?string $navigationGroup = 'Database';
+
     protected static ?string $navigationLabel = 'Pengiriman';
 
     public static function form(Form $form): Form
@@ -71,7 +75,8 @@ class DeliveryResource extends Resource
                 ->label('Tanggal Pengiriman')
                 ->date('d/m/y'),
                 TextColumn::make('order_id')
-                    ->label('Order ID'),
+                    ->label('Order ID')
+                    ->searchable(),
                 TextColumn::make('delivery_status')
                     ->label('Status Pengiriman')
                     ->badge()
@@ -89,10 +94,30 @@ class DeliveryResource extends Resource
                     }),
             ])
             ->filters([
-                //
+                SelectFilter::make('delivery_status')
+                    ->label('Status Pengiriman')
+                    ->options([
+                        'pending' => 'Menunggu Pickup',
+                        'on_delivery' => 'Sedang Dikirim',
+                        'delivered' => 'Sudah Diterima',
+                        'failed' => 'Gagal',
+                    ])
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        if($data['delivery_status'] == 'delivered') {
+                            $data['delivery_date'] = now();
+                        }
+        
+                        return $data;
+                    })
+                    ->after(function(array $data) {
+                        if($data['delivery_status'] == 'delivered') {
+                            $order = Order::findOrFail($data['order_id']);
+                            $order->update(['order_status' => 'delivered']);
+                        }
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

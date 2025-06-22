@@ -1,5 +1,34 @@
+@push('style')
+<!-- Swiper CSS -->
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+@endpush
+
 <div class="container px-6 py-8 mx-auto">
     <div>
+        {{-- Banner Slider --}}
+        <div class="mb-8">
+            <div class="overflow-hidden shadow swiper bannerSwiper rounded-2xl">
+                <div class="swiper-wrapper">
+                    {{-- Ganti URL gambar sesuai kebutuhan --}}
+                    <div class="swiper-slide">
+                        <img src="{{ asset('img/banner1.webp') }}" class="object-cover w-full h-48 md:h-[500px]" alt="Banner 1">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{{ asset('img/banner2.webp') }}" class="object-cover w-full h-48 md:h-[500px]" alt="Banner 2">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{{ asset('img/banner3.webp') }}" class="object-cover w-full h-48 md:h-[500px]" alt="Banner 3">
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
         <h1 class="mb-6 text-2xl font-bold text-gray-800">Katalog Laptop</h1>
         {{-- @livewire('navbar') --}}
     </div>
@@ -42,3 +71,21 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new Swiper(".bannerSwiper", {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+    });
+</script>
+@endpush
