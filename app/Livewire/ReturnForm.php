@@ -11,14 +11,14 @@ class ReturnForm extends Component
 {
     public $order;
     public $reason;
-    public $returnItems = [];
+    public $returnItem = [];
 
     public function mount(Order $order)
     {
-        $this->order = $order->load('orderItems.laptop');
+        $this->order = $order->load('orderItem.laptop');
 
-        foreach ($this->order->orderItems as $item) {
-            $this->returnItems[$item->id] = [
+        foreach ($this->order->orderItem as $item) {
+            $this->returnItem[$item->id] = [
                 'return' => false,
                 'quantity' => $item->quantity,
                 'condition' => '',
@@ -30,7 +30,7 @@ class ReturnForm extends Component
     {
         $this->validate([
             'reason' => 'required|min:10',
-            'returnItems.*.condition' => 'required_if:returnItems.*.return,true|min:3',
+            'returnItem.*.condition' => 'required_if:returnItem.*.return,true|min:3',
         ]);
 
         $retur = LaptopReturn::create([
@@ -42,10 +42,10 @@ class ReturnForm extends Component
             'refund_status' => 'unpaid',
         ]);
 
-        foreach ($this->order->orderItems as $item) {
-            if (!($this->returnItems[$item->id]['return'] ?? false)) continue;
+        foreach ($this->order->orderItem as $item) {
+            if (!($this->returnItem[$item->id]['return'] ?? false)) continue;
 
-            $qty = $this->returnItems[$item->id]['quantity'];
+            $qty = $this->returnItem[$item->id]['quantity'];
             $subtotal = $qty * $item->price_per_item;
 
             LaptopReturnItem::create([
@@ -53,7 +53,7 @@ class ReturnForm extends Component
                 'laptop_id' => $item->laptop_id,
                 'quantity' => $qty,
                 'price_at_return' => $item->price_per_item,
-                'condition_on_return' => $this->returnItems[$item->id]['condition'],
+                'condition_on_return' => $this->returnItem[$item->id]['condition'],
                 'subtotal_returned' => $subtotal,
             ]);
         }

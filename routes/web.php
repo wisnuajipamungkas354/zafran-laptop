@@ -16,10 +16,6 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('cobain');
-});
-
 
 Route::get('/login-customer', LoginCustomer::class)->name('login.customer');
 Route::get('/register-customer', RegisterCustomer::class)->name('register.customer');
@@ -50,7 +46,7 @@ Route::get('/payment-success', function (Request $request) {
     Transaction::create([
         'order_id' => $order->id,
         'payment_type' => 'midtrans',
-        'transaction_id' => 'ORDER-' . $order->id,
+        'transaction_id' => $order->id,
         'status' => 'paid',
         'total_amount' => $order->total_amount,
         'response' => 'manual-success',
