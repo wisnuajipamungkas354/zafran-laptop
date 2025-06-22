@@ -6,9 +6,13 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -17,7 +21,9 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Database';
 
     protected static ?string $navigationLabel = 'Order';
 
@@ -25,7 +31,15 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('order_status')
+                    ->label('Status Order')
+                    ->options([
+                        'pending' => 'Menunggu Pembayaran',
+                        'processing' => 'Diproses Admin',
+                        'shipped' => 'Sedang Dikirim',
+                        'delivered' => 'Sudah Diterima',
+                        'canceled' => 'Dibatalkan'
+                    ]),
             ]);
     }
 
@@ -33,35 +47,92 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('created_at')
+                    ->label('Tanggal')
+                    ->date('d/m/Y H:i'),
+                TextColumn::make('customer.first_name')
+                    ->label('Nama Pelanggan')
+                    ->formatStateUsing(fn(string $state, Order $order) => $state . ' ' . $order->customer->last_name)
+                    ->searchable(),
+                TextColumn::make('total_amount')
+                    ->label('Total Transaksi')
+                    ->formatStateUsing(fn(string $state) => 'Rp' . number_format($state, 0, ',', '.'))
+                    ->alignEnd(),
+                TextColumn::make('payment_status')
+                    ->label('Status Pembayaran')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'paid' => 'success',
+                        'canceled' => 'danger',
+                    })
+                    ->formatStateUsing(function(string $state) {
+                        if($state == 'pending') {
+                            return 'Belum Dibayar';
+                        } elseif($state == 'paid') {
+                            return 'Dibayar';
+                        } else {
+                            return 'Dibatalkan';
+                        }
+                    }),
+                TextColumn::make('order_status')
+                    ->label('Status Order')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'gray',
+                        'processing' => 'info',
+                        'shipped' => 'info',
+                        'delivered' => 'success',
+                        'canceled' => 'danger'
+                    })
+                    ->formatStateUsing(function(string $state) {
+                        if($state == 'pending') {
+                            return 'Menunggu Pembayaran';
+                        } elseif($state == 'processing') {
+                            return 'Diproses Admin';
+                        } elseif($state == 'shipped') {
+                            return 'Sedang Dikirim';
+                        } elseif($state == 'delivered') {
+                            return 'Sudah Diterima';
+                        } else {
+                            return 'Dibatalkan';
+                        }
+                    })
+                
             ])
             ->filters([
-                //
+                SelectFilter::make('payment_status')
+                    ->label('Status Pembayaran')
+                    ->options([
+                        'pending' => 'Belum Dibayar',
+                        'paid' => 'Dibayar',
+                        'canceled' => 'Dibatalkan',
+                    ]),
+                SelectFilter::make('order_status')
+                    ->options([
+                        'pending' => 'Menunggu Pembayaran',
+                        'processing' => 'Diproses Admin',
+                        'shipped' => 'Sedang Dikirim',
+                        'delivered' => 'Sudah Diterima',
+                        'canceled' => 'Dibatalkan'
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateHeading('Belum ada yang order');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+            ->emptyStateHeading('Tidak ada orderan');
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
+            'index' => Pages\ManageOrders::route('/'),
         ];
     }
 }

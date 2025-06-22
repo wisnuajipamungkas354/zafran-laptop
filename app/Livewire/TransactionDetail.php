@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\ShoppingCart;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class TransactionDetail extends Component
@@ -11,9 +14,38 @@ class TransactionDetail extends Component
 
     public function mount($id)
     {
-        $this->order = Order::with('orderItem.laptop')
+        $this->order = Order::with(['orderItem.laptop','delivery'])
             ->where('customer_id', auth('customer')->id())
             ->findOrFail($id);
+    }
+
+    public function payment() {
+        DB::beginTransaction();
+        try {
+            $order = Order::create([
+                'customer_id'     => auth('customer')->id(),
+                'total_amount'    => $this->order->total_amount,
+                'payment_status'  => 'pending',
+                'order_status'    => 'pending',
+                'shipping_address'=> $this->order->shipping_address,
+            ]);
+
+            OrderItem::where('order_id', '=', $this->order->id)->update([
+                'order_id'       => $order->id,
+            ]);
+
+            Order::query()->where('id', '=', $this->order->id)->delete();
+
+            // Hapus keranjang setelah berhasil checkout
+            ShoppingCart::where('customer_id', auth('customer')->id())->delete();
+
+            DB::commit();
+
+            return redirect()->route('payment', ['order' => $order->id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->addError('error', 'Gagal memproses pesanan.' . $e->getMessage());
+        }
     }
 
     public function render()

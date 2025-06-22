@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('return_status', ['pending', 'approved', 'rejected', 'completed'])->default('pending');
             $table->decimal('refund_amount', 10, 2)->nullable();
             $table->enum('refund_status', ['pending', 'refunded', 'not_applicable'])->default('not_applicable');
-            $table->foreignId('processed_by')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete(); // Admin yang memproses
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete(); // Admin yang memproses
             $table->text('notes')->nullable();
             $table->timestamps();
         });

@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Laptop;
+use App\Models\ShoppingCart;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
@@ -31,14 +33,31 @@ class LaptopDetail extends Component
 
     public function addToCart()
     {
-        // Tambahkan ke keranjang (shopping_carts)
-        // Pastikan customer sudah login
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('customer.login'); // jika belum login
+        }
+
+        ShoppingCart::updateOrCreate(
+            [
+                'customer_id' => Auth::guard('customer')->id(),
+                'laptop_id' => $this->laptop->id,
+                'quantity' => $this->quantity,
+                'price_per_item' => $this->laptop->price,
+                'sub_total' => $this->laptop->price * $this->quantity,
+            ]
+        );
+
+        Notification::make()
+                ->title('Berhasil menambahkan ke keranjang')
+                ->success()
+                ->send();
+        // session()->flash('success', 'Produk ditambahkan ke keranjang!');
     }
 
     public function buyNow()
     {
         if(!Auth::guard('customer')->check()) {
-            return redirect()->route('login.customer');
+            return $this->redirect('/login-customer', navigate:true);
         }
 
         if ($this->quantity > $this->laptop->stock) {

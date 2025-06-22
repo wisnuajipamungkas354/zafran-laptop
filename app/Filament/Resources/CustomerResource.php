@@ -23,6 +23,8 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-face-smile';
 
+    protected static ?string $navigationGroup = 'Pengguna Sistem';
+
     protected static ?string $navigationLabel = 'Pelanggan';
 
     public static function form(Form $form): Form
@@ -63,9 +65,8 @@ class CustomerResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('first_name')
-                    ->label('Nama Depan'),
-                TextColumn::make('last_name')
-                    ->label('Nama Belakang'),
+                    ->label('Nama Lengkap')
+                    ->formatStateUsing(fn(string $state, Customer $customer): string => $state . ' ' . $customer->last_name),
                 TextColumn::make('email')
                     ->label('Email'),
                 TextColumn::make('phone_number')

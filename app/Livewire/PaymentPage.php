@@ -11,6 +11,7 @@ class PaymentPage extends Component
 {
     public $order;
     public $snapToken;
+    public $snapUrl;
 
     public function mount(Order $order)
     {

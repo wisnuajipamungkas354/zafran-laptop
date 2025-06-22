@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Delivery extends Model
 {
     protected $guarded = ['id'];
+
+    public function order() {
+        $this->belongsTo(Order::class);
+    }
 }

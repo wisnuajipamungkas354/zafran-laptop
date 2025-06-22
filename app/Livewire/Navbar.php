@@ -11,6 +11,16 @@ class Navbar extends Component
     public $selectedBrand = '';
     public $minPrice = '';
     public $maxPrice = '';
+    public $cartCount = 0;
+
+    protected $listeners = ['updateCartBadge' => 'render'];
+
+    public function mount()
+    {
+        if (auth('customer')->check()) {
+            $this->cartCount = \App\Models\ShoppingCart::where('customer_id', auth('customer')->id())->count();
+        }
+    }
 
     public function updated()
     {

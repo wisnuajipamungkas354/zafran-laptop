@@ -12,7 +12,7 @@
     window.onload = function () {
         snap.pay('{{ $snapToken }}', {
             onSuccess: function(result){
-                window.location.href = "/payment-success?order_id={{ $order->id }}";
+                window.location.href = "/transaksi/{{ $order->id }}";
             },
             onPending: function(result){
                 console.log("pending", result);
