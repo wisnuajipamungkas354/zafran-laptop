@@ -34,7 +34,7 @@ class LaptopDetail extends Component
     public function addToCart()
     {
         if (!Auth::guard('customer')->check()) {
-            return redirect()->route('customer.login'); // jika belum login
+            return redirect()->route('login.customer'); // jika belum login
         }
 
         ShoppingCart::updateOrCreate(
