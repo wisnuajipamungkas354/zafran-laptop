@@ -1,4 +1,14 @@
 <div class="container px-6 py-10 mx-auto">
+        @if (session()->has('success'))
+        <div
+            x-data="{ show: true }"
+            x-show="show"
+            x-init="setTimeout(() => show = false, 3000)"
+            class="px-4 py-3 mb-6 text-sm text-white transition bg-green-600 rounded shadow"
+        >
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="grid grid-cols-1 gap-8 md:flex md:justify-center md:gap-14">
         {{-- Gambar --}}
         @php
@@ -89,7 +99,7 @@
             <p><strong>Storage:</strong> {{ $laptop->storage }}</p>
             <p><strong>Graphics Card:</strong> {{ $laptop->graphics_card ?? 'Default' }}</p>
             <p><strong>Screen Size:</strong> {{ $laptop->screen_size }}</p>
-            <p><strong>Grade :</strong> {{ $laptop->grade }}</p>
+            <p><strong>Grade :</strong> <span class="uppercase">{{ $laptop->grade }}</span></p>
             {!! $laptop->description !!}
         </div>
 

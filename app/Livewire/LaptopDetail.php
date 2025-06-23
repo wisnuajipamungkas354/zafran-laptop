@@ -7,6 +7,7 @@ use App\Models\ShoppingCart;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
 
 class LaptopDetail extends Component
@@ -47,11 +48,11 @@ class LaptopDetail extends Component
             ]
         );
 
-        Notification::make()
-                ->title('Berhasil menambahkan ke keranjang')
-                ->success()
-                ->send();
-        // session()->flash('success', 'Produk ditambahkan ke keranjang!');
+       // Emit event untuk alert
+       LivewireAlert::title('Berhasil')
+            ->text('Laptop berhasil masuk keranjang.')
+            ->success()
+            ->show();
     }
 
     public function buyNow()
