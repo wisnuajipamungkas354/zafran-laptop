@@ -75,28 +75,28 @@
         <div class="mb-4 border-b">
             <nav class="flex space-x-6">
                 <button @click="tab = 'deskripsi'" :class="tab === 'deskripsi' ? 'text-blue-600 border-b-2 border-blue-600 font-semibold' : 'text-gray-500'" class="pb-2">Deskripsi</button>
-                <button @click="tab = 'ulasan'" :class="tab === 'ulasan' ? 'text-blue-600 border-b-2 border-blue-600 font-semibold' : 'text-gray-500'" class="pb-2">Ulasan</button>
+                {{-- <button @click="tab = 'ulasan'" :class="tab === 'ulasan' ? 'text-blue-600 border-b-2 border-blue-600 font-semibold' : 'text-gray-500'" class="pb-2">Ulasan</button> --}}
                 <button @click="tab = 'garansi'" :class="tab === 'garansi' ? 'text-blue-600 border-b-2 border-blue-600 font-semibold' : 'text-gray-500'" class="pb-2">Garansi</button>
             </nav>
         </div>
 
         {{-- Deskripsi --}}
         <div x-show="tab === 'deskripsi'" class="space-y-2">
-            {!! $laptop->description !!}
-            {{-- <p><strong>Brand:</strong> {{ $laptop->brand->brand_name }}</p>
+            <p><strong>Brand:</strong> {{ $laptop->brand->brand_name }}</p>
             <p><strong>Model:</strong> {{ $laptop->model }}</p>
             <p><strong>Processor:</strong> {{ $laptop->processor }}</p>
             <p><strong>RAM:</strong> {{ $laptop->ram }}</p>
             <p><strong>Storage:</strong> {{ $laptop->storage }}</p>
             <p><strong>Graphics Card:</strong> {{ $laptop->graphics_card ?? 'Default' }}</p>
             <p><strong>Screen Size:</strong> {{ $laptop->screen_size }}</p>
-            <p><strong>Condition:</strong> {{ $laptop->condition }}</p> --}}
+            <p><strong>Grade :</strong> {{ $laptop->grade }}</p>
+            {!! $laptop->description !!}
         </div>
 
         {{-- Ulasan --}}
-        <div x-show="tab === 'ulasan'" class="text-gray-600">
+        {{-- <div x-show="tab === 'ulasan'" class="text-gray-600">
             <p>Belum ada ulasan untuk produk ini.</p>
-        </div>
+        </div> --}}
 
         {{-- Garansi --}}
         <div x-show="tab === 'garansi'" class="text-gray-600">
