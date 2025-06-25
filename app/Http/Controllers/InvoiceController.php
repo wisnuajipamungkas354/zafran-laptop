@@ -12,10 +12,11 @@ class InvoiceController extends Controller
     {
         $order = Order::with('orderItem.laptop.brand')
             ->where('customer_id', auth('customer')->id())
-            ->findOrFail($id);
+            ->where('order_number', '=', $id)
+            ->firstOrFail();
 
         $pdf = Pdf::loadView('pdf.invoice', compact('order'));
 
-        return $pdf->stream('invoice-order-' . $order->id . '.pdf');
+        return $pdf->stream('invoice-order-' . $order->order_number . '.pdf');
     }
 }

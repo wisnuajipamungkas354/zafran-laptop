@@ -15,7 +15,7 @@ Route::post('/midtrans/webhook', function (Request $request) {
     Log::info('📩 Midtrans Webhook API:', $payload);
 
     // Ambil order_id asli
-    $order = Order::with('orderItem.laptop')->find($payload['order_id']);
+    $order = Order::with('orderItem.laptop')->where('order_number', '=', $payload['order_id'])->firstOrFail();
     if (! $order) return response()->json(['message' => 'Order not found'], 404);
 
     // Ambil status Midtrans

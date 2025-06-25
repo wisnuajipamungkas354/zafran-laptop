@@ -50,6 +50,9 @@ class OrderResource extends Resource
                 TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->date('d/m/Y H:i'),
+                TextColumn::make('order_number')
+                    ->label('No Order')
+                    ->searchable(),
                 TextColumn::make('customer.first_name')
                     ->label('Nama Pelanggan')
                     ->formatStateUsing(fn(string $state, Order $order) => $state . ' ' . $order->customer->last_name)

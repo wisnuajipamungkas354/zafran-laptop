@@ -25,7 +25,6 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->text('description')->nullable();
             $table->json('laptop_images');
-            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

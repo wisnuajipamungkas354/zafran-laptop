@@ -25,11 +25,4 @@ class CreateLaptop extends CreateRecord
             ->title('Berhasil')
             ->body('Data laptop berhasil ditambahkan');
     }
-
-    protected function handleRecordCreation(array $data): Model
-    {
-        $data['user_id'] = auth()->user()->id;
-
-        return static::getModel()::create($data);
-    }
 }
