@@ -3,13 +3,13 @@
     {{-- Judul + Tombol Aksi --}}
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h2 class="text-3xl font-bold text-gray-800">Detail Transaksi #{{ $order->id }}</h2>
+            <h2 class="text-3xl font-bold text-gray-800">Detail Transaksi #{{ $order->order_number }}</h2>
             <p class="text-sm text-gray-500">Tanggal Pesanan: {{ $order->created_at->format('d M Y H:i') }}</p>
         </div>
 
         <div class="flex flex-col gap-2 sm:flex-row">
             @if($order->payment_status == 'paid')
-                <a href="{{ route('transaksi.invoice', $order->id) }}"
+                <a href="{{ route('transaksi.invoice', $order->order_number) }}"
                 target="_blank"
                 class="px-4 py-2 text-sm text-white bg-blue-600 rounded-xl hover:bg-blue-700">
                     Download Invoice

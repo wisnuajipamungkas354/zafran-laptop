@@ -77,6 +77,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('User ID'),
                 TextColumn::make('name')
                     ->label('Nama Lengkap'),
                 TextColumn::make('gender')

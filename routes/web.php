@@ -25,8 +25,8 @@ Route::get('/katalog/detail/{id}', LaptopDetail::class)->name('katalog.detail');
 Route::get('/checkout', Checkout::class)->name('checkout');
 Route::get('/keranjang', Cart::class)->name('cart');
 Route::get('/transaksi', TransactionHistory::class)->name('transaksi');
-Route::get('/transaksi/{id}', TransactionDetail::class)->name('transaksi.detail');
-Route::get('/payment/{order}', PaymentPage::class)->name('payment');
+Route::get('/transaksi/{order_number}', TransactionDetail::class)->name('transaksi.detail');
+Route::get('/payment/{order_number}', PaymentPage::class)->name('payment');
 Route::get('/payment-success', function (Request $request) {
     // $order = Order::findOrFail($request->order_id);
 
@@ -56,7 +56,7 @@ Route::get('/payment-success', function (Request $request) {
 
     return redirect()->route('katalog')->with('success', 'Pembayaran berhasil.');
 });
-Route::get('/transaksi/{id}/invoice', [InvoiceController::class, 'download'])->name('transaksi.invoice');
+Route::get('/transaksi/{order_number}/invoice', [InvoiceController::class, 'download'])->name('transaksi.invoice');
 Route::get('/retur/{order}', ReturnForm::class)->name('retur.form');
 
 Route::middleware(RedirectIfNotCustomer::class)->group(function () {

@@ -13,8 +13,9 @@ class PaymentPage extends Component
     public $snapToken;
     public $snapUrl;
 
-    public function mount(Order $order)
+    public function mount($order_number)
     {
+        $order = Order::where('order_number', '=', $order_number)->firstOrFail();
         if ($order->payment_status === 'paid') {
             return redirect()->route('katalog')->with('success', 'Pesanan sudah dibayar.');
         }
@@ -30,7 +31,7 @@ class PaymentPage extends Component
         // Snap Token
         $params = [
             'transaction_details' => [
-                'order_id' => $this->order->id,
+                'order_id' => $this->order->order_number,
                 'gross_amount' => (int)$order->total_amount,
             ],
             'customer_details' => [

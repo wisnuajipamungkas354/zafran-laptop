@@ -7,24 +7,39 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $guarded = ['id'];
+    
 
-    public $incrementing = false;
-
-    // Event "creating" untuk otomatis mengisi pengkodean id
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::creating(function ($model) {
-            // Panggil fungsi untuk generate id
-            $model->id = self::generateUniqueId($model);
+        static::creating(function ($order) {
+            if (!$order->order_number) {
+                $order->order_number = self::generateNumericOrderId();
+            }
         });
     }
 
-    public static function generateUniqueId($model)
+    public static function generateNumericOrderId(): string
     {
-        $finalId = now()->timestamp;
+        $datePart = now()->format('ymd'); // contoh: 250625
+        $prefix = $datePart;
 
-        return $finalId;
+        $counter = 1;
+        do {
+            $sequence = str_pad($counter, 4, '0', STR_PAD_LEFT); // 0001, 0002, ...
+            $orderNumber = $prefix . $sequence;
+
+            $exists = self::where('order_number', $orderNumber)->exists();
+            $counter++;
+        } while ($exists && $counter <= 9999);
+
+        return $orderNumber;
     }
+
+    public function getRouteKeyName()
+    {
+        return 'order_number';
+    }
+
 
     public function isReturnable()
     {

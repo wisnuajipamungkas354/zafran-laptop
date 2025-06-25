@@ -12,14 +12,17 @@ class TransactionDetail extends Component
 {
     public $order;
 
-    public function mount($id)
+    public function mount($order_number)
     {
         $this->order = Order::with(['orderItem.laptop','delivery'])
             ->where('customer_id', auth('customer')->id())
-            ->findOrFail($id);
+            ->where('order_number', $order_number)
+            ->firstOrFail();
+            
     }
 
     public function payment() {
+
         DB::beginTransaction();
         try {
             $order = Order::create([
@@ -41,7 +44,7 @@ class TransactionDetail extends Component
 
             DB::commit();
 
-            return redirect()->route('payment', ['order' => $order->id]);
+            return redirect()->route('payment', ['order_number' => $order->order_number]);
         } catch (\Exception $e) {
             DB::rollBack();
             $this->addError('error', 'Gagal memproses pesanan.' . $e->getMessage());
