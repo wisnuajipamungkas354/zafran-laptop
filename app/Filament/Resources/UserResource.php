@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -81,8 +82,9 @@ class UserResource extends Resource
                     ->label('User ID'),
                 TextColumn::make('name')
                     ->label('Nama Lengkap'),
-                TextColumn::make('gender')
-                    ->label('L/P'),
+                TextColumn::make('roles.name')
+                    ->label('Role')
+                    ->formatStateUsing(fn ($state): string => Str::headline($state)),
                 TextColumn::make('email')
                     ->label('Email'),
                 TextColumn::make('phone_number')
