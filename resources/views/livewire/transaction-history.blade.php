@@ -14,9 +14,9 @@
                         {{-- Kiri: Info Order --}}
                         <div class="flex-1">
                             <div class="mb-2">
-                                <a href="{{ route('transaksi.detail', $order->id) }}"
+                                <a href="{{ route('transaksi.detail', $order->order_number) }}"
                                    class="text-lg font-semibold text-blue-600 hover:underline">
-                                    Order #{{ $order->id }}
+                                    Order #{{ $order->order_number }}
                                 </a>
                                 <p class="text-sm text-gray-500">
                                     {{ $order->created_at->format('d M Y H:i') }}

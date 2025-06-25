@@ -32,4 +32,8 @@ class Customer extends Authenticatable
     public function laptopReturn() {
         return $this->hasMany(LaptopReturn::class);
     }
+
+    public function customerAddress() {
+        return $this->hasMany(CustomerAddress::class);
+    }
 }

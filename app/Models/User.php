@@ -45,6 +45,41 @@ class User extends Authenticatable implements FilamentUser, HasName
         'remember_token',
     ];
 
+    public $incrementing = false;
+
+    // Event "creating" untuk otomatis mengisi pengkodean id
+    protected static function booted(): void
+    {
+        static::creating(function ($user) {
+            if (!$user->id) {
+                // Kamu bisa menyesuaikan logic roleCode di sini
+                $user->id = self::generateId(self::roleCode($user->role ?? 'admin'));
+            }
+        });
+    }
+    
+    public static function generateId(int $roleCode): int
+    {
+        $dateCode = now()->format('ymd'); // format YYMMDD, contoh: 250623
+
+        $count = self::whereDate('created_at', today())
+            ->where('id', 'like', "{$roleCode}{$dateCode}%")
+            ->count() + 1;
+
+        $order = min($count, 9); // hanya 1 digit
+
+        return (int)("{$roleCode}{$dateCode}{$order}");
+    }
+
+    public static function roleCode(string $role): int
+    {
+        return [
+            'admin' => 1,
+            'kurir' => 2,
+            'owner' => 3,
+        ][$role] ?? 9; // 9 = undefined
+    }
+
     /**
      * Get the attributes that should be cast.
      *

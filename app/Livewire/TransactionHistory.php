@@ -12,7 +12,7 @@ class TransactionHistory extends Component
     public function mount()
     {
         $this->orders = Order::with('delivery')->where('customer_id', auth('customer')->id())
-                             ->orderByDesc('id')
+                             ->orderByDesc('order_number')
                              ->get();
     }
 
