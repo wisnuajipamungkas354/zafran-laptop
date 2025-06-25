@@ -132,16 +132,19 @@ class OrderResource extends Resource
                         ->label('Status Pembayaran')
                         ->options([
                             '' => 'Semua',
-                            'pending' => 'Pending',
-                            'paid' => 'Paid',
+                            'pending' => 'Belum Dibayar',
+                            'paid' => 'Dibayar',
+                            'canceled' => 'Dibatalkan',
                         ]),
                     Forms\Components\Select::make('order_status')
                         ->label('Status Order')
                         ->options([
                             '' => 'Semua',
-                            'pending' => 'Pending',
-                            'diproses' => 'Diproses',
-                            'dikirim' => 'Dikirim',
+                            'pending' => 'Menunggu Pembayaran',
+                            'processing' => 'Diproses Admin',
+                            'shipped' => 'Sedang Dikirim',
+                            'delivered' => 'Sudah Diterima',
+                            'canceled' => 'Dibatalkan'
                         ]),
                     Forms\Components\DatePicker::make('start')
                         ->label('Dari Tanggal'),
@@ -162,16 +165,19 @@ class OrderResource extends Resource
                         ->label('Status Pembayaran')
                         ->options([
                             '' => 'Semua',
-                            'pending' => 'Pending',
-                            'paid' => 'Paid',
+                            'pending' => 'Belum Dibayar',
+                            'paid' => 'Dibayar',
+                            'canceled' => 'Dibatalkan',
                         ]),
                     Forms\Components\Select::make('order_status')
                         ->label('Status Order')
                         ->options([
                             '' => 'Semua',
-                            'pending' => 'Pending',
-                            'diproses' => 'Diproses',
-                            'dikirim' => 'Dikirim',
+                            'pending' => 'Menunggu Pembayaran',
+                            'processing' => 'Diproses Admin',
+                            'shipped' => 'Sedang Dikirim',
+                            'delivered' => 'Sudah Diterima',
+                            'canceled' => 'Dibatalkan'
                         ]),
                     Forms\Components\DatePicker::make('start')->label('Dari Tanggal'),
                     Forms\Components\DatePicker::make('end')->label('Sampai Tanggal'),
