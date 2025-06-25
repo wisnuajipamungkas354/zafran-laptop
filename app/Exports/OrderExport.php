@@ -36,13 +36,27 @@ class OrderExport implements FromCollection, WithHeadings
         }
 
         return $orders->with('customer')->get()->map(function ($order) {
+            $paymentStatusMap = [
+                'pending' => 'Belum Dibayar',
+                'paid' => 'Dibayar',
+                'canceled' => 'Dibatalkan',
+            ];
+        
+            $orderStatusMap = [
+                'pending' => 'Menunggu Pembayaran',
+                'processing' => 'Diproses Admin',
+                'shipped' => 'Sedang Dikirim',
+                'delivered' => 'Sudah Diterima',
+                'canceled' => 'Dibatalkan',
+            ];
+        
             return [
                 $order->order_number,
                 $order->created_at->format('d-m-Y'),
                 $order->customer->first_name ?? '-',
                 $order->total_amount,
-                $order->payment_status,
-                $order->order_status,
+                $paymentStatusMap[$order->payment_status] ?? '-',
+                $orderStatusMap[$order->order_status] ?? '-',
             ];
         });
     }

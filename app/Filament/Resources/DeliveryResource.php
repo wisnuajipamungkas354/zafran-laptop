@@ -36,9 +36,10 @@ class DeliveryResource extends Resource
             ->schema([
                 Select::make('order_id')
                     ->label('Pilih Order')
-                    ->options(fn() => Order::query()->where('order_status', '=', 'shipped')->pluck('id', 'order_number'))
-                    ->columnSpanFull(),
-                Select::make('courier_id')
+                    ->relationship('order', 'order_number')
+                    ->columnSpanFull()
+                    ->visible(fn() => auth()->user()->roles[0]->name !== 'kurir'),
+                Select::make('user_id')
                     ->label('Pilih Kurir')
                     ->options(function() {
                         $options = User::with('roles')->get();
@@ -52,9 +53,11 @@ class DeliveryResource extends Resource
                             }
                         }
                         return $result;
-                    }),
+                    })
+                    ->visible(fn() => auth()->user()->roles[0]->name != 'kurir'),
                 DatePicker::make('shipping_date')
-                    ->label('Tanggal Pengiriman'),
+                    ->label('Tanggal Pengiriman')
+                    ->visible(fn() => auth()->user()->roles[0]->name != 'kurir'),
                 Select::make('delivery_status')
                     ->label('Status Pengiriman')
                     ->options([
@@ -74,7 +77,7 @@ class DeliveryResource extends Resource
                 TextColumn::make('shipping_date')
                 ->label('Tanggal Pengiriman')
                 ->date('d/m/y'),
-                TextColumn::make('order_number')
+                TextColumn::make('order.order_number')
                     ->label('No Order')
                     ->searchable(),
                 TextColumn::make('delivery_status')
@@ -112,10 +115,11 @@ class DeliveryResource extends Resource
         
                         return $data;
                     })
-                    ->after(function(array $data) {
-                        if($data['delivery_status'] == 'delivered') {
-                            $order = Order::findOrFail($data['order_id']);
-                            $order->update(['order_status' => 'delivered']);
+                    ->after(function (Delivery $record, array $data) {
+                        if ($data['delivery_status'] === 'delivered') {
+                            $record->order->update([
+                                'order_status' => 'delivered',
+                            ]);
                         }
                     }),
                 Tables\Actions\DeleteAction::make(),

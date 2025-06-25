@@ -31,8 +31,28 @@
                 <td>{{ $order->created_at->format('d/m/Y') }}</td>
                 <td>{{ $order->customer->first_name ?? '-' }}</td>
                 <td>Rp{{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                <td>{{ ucfirst($order->payment_status) }}</td>
-                <td>{{ ucfirst($order->order_status) }}</td>
+                <td>
+                  @php
+                      $paymentStatus = [
+                          'pending' => 'Belum Dibayar',
+                          'paid' => 'Dibayar',
+                          'canceled' => 'Dibatalkan',
+                      ];
+                  @endphp
+                  {{ $paymentStatus[$order->payment_status] ?? '-' }}
+              </td>
+              <td>
+                  @php
+                      $orderStatus = [
+                          'pending' => 'Menunggu Pembayaran',
+                          'processing' => 'Diproses Admin',
+                          'shipped' => 'Sedang Dikirim',
+                          'delivered' => 'Sudah Diterima',
+                          'canceled' => 'Dibatalkan',
+                      ];
+                  @endphp
+                  {{ $orderStatus[$order->order_status] ?? '-' }}
+              </td>
             </tr>
             @endforeach
         </tbody>
