@@ -15,12 +15,12 @@ class ManageUsers extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Tambah User'),
+                ->label('Tambah Pegawai'),
         ];
     }
 
     public function getTitle(): string|Htmlable
     {
-        return 'Data User Sistem';
+        return 'Data Pegawai';
     }
 }

@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -123,6 +124,66 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+            ])
+            ->headerActions([
+                Action::make('Pdf')
+                ->form([
+                    Forms\Components\Select::make('payment_status')
+                        ->label('Status Pembayaran')
+                        ->options([
+                            '' => 'Semua',
+                            'pending' => 'Pending',
+                            'paid' => 'Paid',
+                        ]),
+                    Forms\Components\Select::make('order_status')
+                        ->label('Status Order')
+                        ->options([
+                            '' => 'Semua',
+                            'pending' => 'Pending',
+                            'diproses' => 'Diproses',
+                            'dikirim' => 'Dikirim',
+                        ]),
+                    Forms\Components\DatePicker::make('start')
+                        ->label('Dari Tanggal'),
+                    Forms\Components\DatePicker::make('end')
+                        ->label('Sampai Tanggal'),
+                ])
+                ->icon('heroicon-o-document-arrow-down')
+                ->color('danger')
+                ->action(function (array $data) {
+                    // Simpan data filter ke session flash & redirect
+                    session()->flash('filter_export', $data);
+                    redirect()->route('admin.orders.export.pdf');
+                })
+                ->modalSubmitActionLabel('Unduh'),
+                Action::make('Export Excel')
+                ->form([
+                    Forms\Components\Select::make('payment_status')
+                        ->label('Status Pembayaran')
+                        ->options([
+                            '' => 'Semua',
+                            'pending' => 'Pending',
+                            'paid' => 'Paid',
+                        ]),
+                    Forms\Components\Select::make('order_status')
+                        ->label('Status Order')
+                        ->options([
+                            '' => 'Semua',
+                            'pending' => 'Pending',
+                            'diproses' => 'Diproses',
+                            'dikirim' => 'Dikirim',
+                        ]),
+                    Forms\Components\DatePicker::make('start')->label('Dari Tanggal'),
+                    Forms\Components\DatePicker::make('end')->label('Sampai Tanggal'),
+                ])
+                ->label('Excel')
+                ->icon('heroicon-o-document-arrow-down')
+                ->color('success')
+                ->action(function (array $data) {
+                    session()->flash('filter_export', $data);
+                    redirect()->route('admin.orders.export.excel');
+                })
+                ->modalSubmitActionLabel('Unduh'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

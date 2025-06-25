@@ -36,7 +36,7 @@ class DeliveryResource extends Resource
             ->schema([
                 Select::make('order_id')
                     ->label('Pilih Order')
-                    ->options(fn() => Order::query()->where('order_status', '=', 'shipped')->pluck('id', 'id'))
+                    ->options(fn() => Order::query()->where('order_status', '=', 'shipped')->pluck('id', 'order_number'))
                     ->columnSpanFull(),
                 Select::make('courier_id')
                     ->label('Pilih Kurir')
@@ -74,8 +74,8 @@ class DeliveryResource extends Resource
                 TextColumn::make('shipping_date')
                 ->label('Tanggal Pengiriman')
                 ->date('d/m/y'),
-                TextColumn::make('order_id')
-                    ->label('Order ID')
+                TextColumn::make('order_number')
+                    ->label('No Order')
                     ->searchable(),
                 TextColumn::make('delivery_status')
                     ->label('Status Pengiriman')

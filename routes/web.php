@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\OrderExportController;
 use App\Http\Middleware\RedirectIfNotCustomer;
 use App\Livewire\Cart;
 use App\Livewire\Checkout;
@@ -58,6 +59,10 @@ Route::get('/payment-success', function (Request $request) {
 });
 Route::get('/transaksi/{order_number}/invoice', [InvoiceController::class, 'download'])->name('transaksi.invoice');
 Route::get('/retur/{order}', ReturnForm::class)->name('retur.form');
+Route::get('/admin/orders/export/pdf', [OrderExportController::class, 'download'])
+    ->name('admin.orders.export.pdf');
+Route::get('/admin/orders/export/excel', [OrderExportController::class, 'excel'])
+->name('admin.orders.export.excel');
 
 Route::middleware(RedirectIfNotCustomer::class)->group(function () {
 });
