@@ -23,16 +23,21 @@ class Order extends Model
         $datePart = now()->format('ymd'); // contoh: 250625
         $prefix = $datePart;
 
-        $counter = 1;
-        do {
-            $sequence = str_pad($counter, 4, '0', STR_PAD_LEFT); // 0001, 0002, ...
-            $orderNumber = $prefix . $sequence;
+        // Ambil order_number terakhir yang diawali tanggal hari ini
+        $lastOrder = self::where('order_number', 'like', $prefix . '%')
+            ->orderBy('order_number', 'desc')
+            ->first();
 
-            $exists = self::where('order_number', $orderNumber)->exists();
-            $counter++;
-        } while ($exists && $counter <= 9999);
+        if ($lastOrder) {
+            // Ambil 4 digit terakhir sebagai nomor urut
+            $lastNumber = (int)substr($lastOrder->order_number, -4);
+        } else {
+            $lastNumber = 0;
+        }
 
-        return $orderNumber;
+        $nextNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+
+        return $prefix . $nextNumber;
     }
 
     public function getRouteKeyName()

@@ -80,14 +80,14 @@
           </p>
       
           <hr style="margin-top: 12px; border-top: 1px solid #ddd;">
-          <p style="margin-top: 6px; font-weight: bold;">INVOICE PEMBELIAN #{{ $order->id }}</p>
+          <p style="margin-top: 6px; font-weight: bold;">INVOICE PEMBELIAN #{{ $order->order_number }}</p>
         </div>
     
 
         {{-- Info Order --}}
         <table class="info-table">
             <tr>
-                <td><strong>No. Invoice:</strong> #{{ $order->id }}</td>
+                <td><strong>No. Invoice:</strong> #{{ $order->order_number }}</td>
                 <td><strong>Tanggal:</strong> {{ $order->created_at->format('d M Y H:i') }}</td>
             </tr>
             <tr>
