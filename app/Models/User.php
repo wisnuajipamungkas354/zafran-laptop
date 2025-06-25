@@ -93,10 +93,6 @@ class User extends Authenticatable implements FilamentUser, HasName
         ];
     }
 
-    public function laptop() {
-        return $this->hasMany(Laptop::class);
-    }
-
     public function canAccessPanel(Panel $panel): bool
     {
         return true;

@@ -140,8 +140,6 @@ class LaptopResource extends Resource
                 TextColumn::make('price')
                     ->label('Harga')
                     ->money('IDR',locale: 'id'),
-                TextColumn::make('user.name')
-                    ->label('Ditambahkan oleh'),
             ])
             ->filters([
                 SelectFilter::make('brand_id')
